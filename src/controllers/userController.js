@@ -31,7 +31,7 @@ module.exports = {
                    to: newUser.email,
                    from: 'Blocipedia@bloc.com',
                    subject: 'Welcome to Blocipedia!',
-                   text: 'Thank you for joining the Blocipedia!'
+                   text: 'Thank you for joining Blocipedia!'
                };
                sgMail.send(msg);
            }
