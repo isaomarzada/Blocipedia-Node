@@ -20,10 +20,26 @@ module.exports = {
                res.redirect("/users/signup");
            }   else {
 
-               passport.authenticate("local")(req, res, () => {
-                   req.flash("notice", "You've successfully signed in!");
-                   res.redirect("/");
-               })
+             passport.authenticate("local", (err, user, info) => {
+                 if (err || !user) {
+                   console.log("ERROR:", err);
+                   req.flash(
+                     "notice",
+                     info ? info.message : "Sign in failed. Please try again."
+                   );
+                   return res.redirect("/users/sign_in");
+                 } else {
+                   req.logIn(user, err => {
+                     if (err) {
+                       console.log("ERROR:", err);
+                       req.flash("notice", "Sign in failed. Please try again.");
+                       return res.redirect(500, "/users/sign_in");
+                     }
+                     req.flash("notice", "You've succesfully signed in!");
+                     return res.redirect("/");
+                   });
+                 }
+               })(req, res, next);
 
                const sgMail = require('@sendgrid/mail');
                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
