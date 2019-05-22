@@ -140,7 +140,7 @@ describe("routes : wikis ", () => {
 
                     describe("GET /wikis/:id/edit", () => {
 
-                             it("should render a view iwth an edit wiki form", (done) => {
+                             it("should render a view with an edit wiki form", (done) => {
                                  request.get(`${base}${this.wiki.id}/edit`, (err, res, body) => {
                                      expect(err).toBeNull();
                                      expect(body).toContain("Edit Wiki");
