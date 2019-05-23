@@ -30,6 +30,7 @@
     "pg-hstore": "^2.3.2",
     "sendgrid": "^5.2.3",
     "sequelize": "^4.32.6",
-    "sequelize-cli": "^5.4.0"
+    "sequelize-cli": "^5.4.0",
+    "stripe": "^7.0.1"
   }
 }

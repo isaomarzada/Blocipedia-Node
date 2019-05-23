@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../static/partials/head.ejs') -%>
+  </head>
+  <body>
+    <%- include('../static/partials/navbar.ejs') -%>
+     <main class="container">
+       <%- include('../static/partials/messages.ejs') -%>
+      <% if(currentUser.role ==="standard") { %>
+      <h1>Upgrade Account</h1>
+      <hr>
+      <form action="/users/<%= currentUser.id %>/upgrade" method="POST">
+         <script
+           src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+           data-key="pk_test_rkHYCPLPgxgNm22xU51MB4u8"
+           data-amount="1500"
+           data-name="Stripe.com"
+           data-description="Preimium Membership Charge"
+           data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+           data-currency="cad"
+           data-locale="auto"
+           data-zip-code="true">
+         </script>
+       </form>
+      <% } %>
+    </main>
+     <%- include('../static/partials/baseScripts.ejs') -%>
+   </body>
+</html> 

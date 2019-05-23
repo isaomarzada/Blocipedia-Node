@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../static/partials/head.ejs') -%>
+  </head>
+  <body>
+    <%- include('../static/partials/navbar.ejs') -%>
+     <main class="container">
+       <%- include('../static/partials/messages.ejs') -%>
+      <% if(currentUser.role ==="premium") { %>
+      <h1>Downgrade Account</h1>
+      <hr>
+      <form action="/users/<%=currentUser.id%>/downgrade" method="POST">
+        <button type="submit" class="btn btn-primary btn-lg">Downgrade Account</button>
+      </form>
+      <% } %>
+    </main>
+     <%- include('../static/partials/baseScripts.ejs') -%>
+   </body>
+</html> 

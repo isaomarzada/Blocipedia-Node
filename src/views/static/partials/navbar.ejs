@@ -23,6 +23,22 @@
              <a class="nav-link" href="/users/sign_in">Sign in</a>
            </li>
          <% }%>
+         <% if(currentUser) { %>
+        <% if(currentUser.role == "standard") { %>
+           <li class =nav-item>
+            <a class= "nav-link" href="/users/<%=currentUser.id%>/upgrade" class="btn btn-primary btn-lg">Upgrade Account</a>
+           </li>
+        <% } %>
+        <% if(currentUser.role == "premium") { %>
+          <li class="nav-item">
+            <a class= "nav-link" href= "/users/<%=currentUser.id%>/downgrade" class="btn btn-primary btn-lg">Downgrade Account</a>
+          </li>
+          <% } %>
+    <%  } else { %>
+      <li class="nav-item">
+      <a href="/users/signup" class="btn btn-primary btn-md">Sign up</a>
+      </li>
+    <% } %>
         </ul>
       </div>
     </div>

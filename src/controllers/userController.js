@@ -74,5 +74,49 @@ module.exports = {
        req.logout();
        req.flash("notice", "You've successfully signed out.");
        res.redirect("/");
-   }
+   },
+
+	upgradePage(req, res, next){
+		res.render("users/upgrade");
+	},
+
+ upgrade(req, res, next){
+	 const stripe = require("stripe")("pk_test_lzRi0jpBUXKas2lMeTbuhWcc00JQGvqOBp");
+	 const token = req.body.stripeToken;
+	 const charge = stripe.charges.create({
+		 amount: 1500,
+		 currency: "cad",
+		 description: "Upgrade",
+		 source: token,
+		 statement_descriptor: 'Blocipedia Upgrade',
+		 capture: false,
+	 });
+	 userQueries.upgrade(req.params.id, (err, user) => {
+		 if(err && err.type ==="StripeCardError"){
+			 req.flash("notice", "Your payment was unsuccessful");
+			 res.redirect("/users/upgrade");
+		 } else{
+			 req.flash("notice", "Your payment was successful, you are now a Premium Member!");
+			 res.redirect(`/`);
+
+		 }
+	 });
+ },
+
+ downgradePage(req, res, next) {
+	 res.render("users/downgrade");
+ },
+
+ downgrade(req, res, next){
+	 userQueries.downgrade(req.params.id, (err, user) => {
+		 if(err){
+			 req.flash("notice", "There was an error processing this request");
+			 res.redirect("users/downgrade");
+		 } else{
+			 req.flash("notice", "Your account has been changed back to standard");
+			 res.redirect(`/`);
+		 }
+	 });
+ },
+
 }
