@@ -1,5 +1,8 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
+const wikiQueries = require("../db/queries.wikis.js");
+const User = require("../db/models/").User;
+const Wiki = require("../db/models/").Wiki;
 
 module.exports = {
 

@@ -8,6 +8,7 @@ for(let i = 1 ; i <= 10; i++){
   users.push({
     email: faker.internet.email(),
     password: faker.hacker.noun(),
+    role: 0,
     createdAt: new Date(),
     updatedAt: new Date()
   });

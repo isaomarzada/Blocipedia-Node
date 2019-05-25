@@ -39,6 +39,11 @@
       <a href="/users/signup" class="btn btn-primary btn-md">Sign up</a>
       </li>
     <% } %>
+    <% if(currentUser && (currentUser.role == "premium" || currentUser.role == "admin")) { %>
+         <li class ="nav-item">
+          <a class="nav-link" href="/wikis/private">Private Wikis</a>
+        </li>
+        <% } %>
         </ul>
       </div>
     </div>
