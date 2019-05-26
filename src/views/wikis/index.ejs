@@ -14,9 +14,12 @@
       <ul class="list-group">
         <% wikis.forEach((wiki) => { %>
           	<% if(wiki.private === false) { %>
-        	  	<li class="list-group-item">
-            		<a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
-          </li>
+              <li class="list-group-item">
+              <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+                <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
+                <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
           <% } %>
         <% }) %>
       </ul>

@@ -1,10 +1,11 @@
 const Wiki = require("./models").Wiki;
 const User = require("./models").User;
 const Authorizer = require("../policies/application");
+const Collaborator = require ("./models").Collaborator;
 
 module.exports = {
     getAllWikis(callback){
-        return Wiki.all()
+      return Wiki.findAll()
 
         .then((wikis) => {
             callback(null, wikis);
@@ -24,15 +25,27 @@ module.exports = {
         })
     },
 
-    getWiki(id, callback){
-        return Wiki.findById(id)
-        .then((wiki) => {
-            callback(null, wiki);
-        })
-        .catch((err) => {
-            callback(err);
-        })
-      },
+    getWikis(id, callback) {
+        let result = {};
+        Wiki.findById(id)
+            .then((wiki) => {
+                if (!wiki) {
+                    callback(404);
+                } else {
+                    result["wiki"] = wiki;
+                    Collaborator.scope({
+                            method: ["collaboratorsFor", id]
+                        }).all()
+                        .then((collaborators) => {
+                            result["collaborators"] = collaborators;
+                            callback(null, result);
+                        })
+                        .catch((err) => {
+                            callback(err);
+                   })
+             }
+          })
+    },
 
       deleteWiki(req, callback){
          return Wiki.findById(req.params.id)
@@ -55,7 +68,7 @@ module.exports = {
     },
 
     updateWiki(req, updatedWiki, callback){
-          return Wiki.findById(req.params.id)
+          return Wiki.findByPk(req.params.id)
         .then((wiki) => {
             if(!wiki){
                 return callback("Wiki not found");
@@ -81,7 +94,7 @@ module.exports = {
         });
     },
     privateToPublic(id) {
-		return Wiki.all()
+		return Wiki.findAll()
 		.then(wikis => {
 			wikis.forEach(wiki => {
 			    if (wiki.userId == id && wiki.private == true) {

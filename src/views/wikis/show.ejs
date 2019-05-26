@@ -7,18 +7,44 @@
     <% include ../static/partials/navbar.ejs %>
 
     <main class="container">
-      <% include ../static/partials/messages.ejs %>
+     <%- include('../static/partials/messages.ejs') -%>
+      <h1><%- wiki.title %></h1>
 
-     <h1><%= wiki.title %></h1>
-       <% if(currentUser) { %>
-       <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
+     <% if (currentUser) { %>
+      <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
+       <% if(currentUser.id == wiki.userId || currentUser.isAdmin()) { %>
          <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
-         <button type="submit" class="btn btn-danger">Delete</button>
-         </form>
-         <p><%- wiki.body %></p>
-     </main>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      <% } %>
+      <% if(currentUser.isPremium() || currentUser.isAdmin()) { %>
+        <% if(wiki.private == true) { %>
+          <form style="display:initial" action="/wikis" method="post">
+            <button type="submit" class="btn btn-info">Make Public</button>
+          </form>
+        <% } else { %>
+        <form style="display:initial" action="/wikis/<%= wiki.id %>/private" method="post">
+          <button type="submit" class="btn btn-dark">Make Private</button>
+        </form>
+        <% } %>
+      <% } %>
+    <% } %>
+      <p><%- wiki.body %></p>
+      <hr>
 
-     <% include ../static/partials/baseScripts.ejs %>
 
-   </body>
- </html> 
+      <h4>Collaborators on this Wiki</h4>
+      <% if(wiki.collaborators) { %>
+        <ul>
+          <% wiki.collaborators.forEach((collaborator) => { %>
+            <li>
+              <p> <%= collaborator.User.name %> </p>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+   </main>
+
+   <%- include('../static/partials/baseScripts.ejs') -%>
+ </body>
+</html> 

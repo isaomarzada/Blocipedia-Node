@@ -45,4 +45,7 @@ module.exports = class ApplicationPolicy {
     destroy() {
         return this.user != null;
     }
+    showCollaborators() {
+		    return this.edit();
+	}
 }
